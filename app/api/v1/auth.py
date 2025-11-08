@@ -10,21 +10,21 @@ from app.core.auth_service import (
     get_password_hash,
     ACCESS_TOKEN_EXPIRE_MINUTES,
 )
-from app.models.organization import User
-from app.schemas.auth import Token, UserCreate, UserPublic
+from app.models.organization import User, Organization
+from app.schemas.auth import Token, UserCreate, UserPublic, UserRegister
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/register", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
 async def register(
-    user_data: UserCreate,
+    user_data: UserRegister,
     db: AsyncSession = Depends(get_db)
 ):
     """
-    Register a new user.
+    Register a new user and organization.
     
-    Creates a new user account with hashed password.
+    Creates a new organization and the first user account with hashed password.
     """
     # Check if user already exists
     from app.core.auth_service import get_user_by_email
@@ -35,13 +35,18 @@ async def register(
             detail="Email already registered"
         )
     
+    # Create organization first
+    new_org = Organization(name=user_data.organization_name)
+    db.add(new_org)
+    await db.flush()  # Get the organization ID
+    
     # Create new user
     hashed_password = get_password_hash(user_data.password)
     new_user = User(
         email=user_data.email,
         hashed_password=hashed_password,
         full_name=user_data.full_name,
-        organization_id=user_data.organization_id
+        organization_id=new_org.id
     )
     
     db.add(new_user)

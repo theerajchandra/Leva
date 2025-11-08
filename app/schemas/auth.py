@@ -21,6 +21,14 @@ class UserCreate(BaseModel):
     organization_id: int
 
 
+class UserRegister(BaseModel):
+    """User registration schema with organization creation."""
+    email: EmailStr
+    password: str
+    full_name: str
+    organization_name: str
+
+
 class UserPublic(BaseModel):
     """User public schema (no sensitive data)."""
     id: int
