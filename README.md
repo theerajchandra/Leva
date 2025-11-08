@@ -23,13 +23,13 @@ This closes the cash flow gap, unlocking growth. Leva is a software-first underw
 This repository is a full-stack, multi-tenant application built with a modern, production-ready stack.
 
 | Backend | Frontend |
-| :--- | :--- |
+|---------|----------|
 | FastAPI (async) | React 18 |
 | PostgreSQL | TypeScript |
-| SQLAlchemy (async) | React Query (Server State) |
-| Alembic (Migrations) | Zustand (Global State) |
-| Pydantic (Validation) | Chakra UI (Components) |
-| JWT Authentication | Axios (HTTP Client) |
+| SQLAlchemy (async) | React Query |
+| Alembic (Migrations) | Zustand |
+| Pydantic (Validation) | Chakra UI |
+| JWT Authentication | Axios |
 
 ## Key Features
 
